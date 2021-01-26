@@ -1,4 +1,4 @@
-## NOTE: Must download opentelemetry JAR into adservice directory. You can download it from here: https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent-all.jar
+### NOTE: Must download opentelemetry JAR into adservice directory. You can download it from here: https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent-all.jar
 
 # Ad Service
 
