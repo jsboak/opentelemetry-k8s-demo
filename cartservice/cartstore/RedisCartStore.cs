@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using StackExchange.Redis;
 using Google.Protobuf;
+using OpenTelemetry.Trace;
 
 namespace cartservice.cartstore
 {
@@ -43,6 +44,18 @@ namespace cartservice.cartstore
             connectionString = $"{redisAddress},ssl=false,allowAdmin=true,connectRetry=5";
 
             redisConnectionOptions = ConfigurationOptions.Parse(connectionString);
+
+            services.AddOpenTelemetryTracing((builder) => builder
+                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("redis-cart"))
+                .AddAspNetCoreInstrumentation()
+                .AddHttpClientInstrumentation()
+                .AddGrpcClientInstrumentation()
+                .AddRedisInstrumentation(redisConnectionOptions)
+                .AddJaegerExporter(jaegerOptions =>
+                {
+                    jaegerOptions.AgentHost = "otel-agent";
+                    jaegerOptions.AgentPort = 6831;
+                }));
 
             // Try to reconnect if first retry failed (up to 5 times with exponential backoff)
             redisConnectionOptions.ConnectRetry = REDIS_RETRY_NUM;
@@ -74,6 +87,8 @@ namespace cartservice.cartstore
 
                 Console.WriteLine("Connecting to Redis: " + connectionString);
                 redis = ConnectionMultiplexer.Connect(redisConnectionOptions);
+
+
 
                 if (redis == null || !redis.IsConnected)
                 {
