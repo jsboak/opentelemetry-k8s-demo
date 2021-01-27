@@ -45,18 +45,6 @@ namespace cartservice.cartstore
 
             redisConnectionOptions = ConfigurationOptions.Parse(connectionString);
 
-            services.AddOpenTelemetryTracing((builder) => builder
-                .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("redis-cart"))
-                .AddAspNetCoreInstrumentation()
-                .AddHttpClientInstrumentation()
-                .AddGrpcClientInstrumentation()
-                .AddRedisInstrumentation(redisConnectionOptions)
-                .AddJaegerExporter(jaegerOptions =>
-                {
-                    jaegerOptions.AgentHost = "otel-agent";
-                    jaegerOptions.AgentPort = 6831;
-                }));
-
             // Try to reconnect if first retry failed (up to 5 times with exponential backoff)
             redisConnectionOptions.ConnectRetry = REDIS_RETRY_NUM;
             redisConnectionOptions.ReconnectRetryPolicy = new ExponentialRetry(100);
@@ -88,7 +76,17 @@ namespace cartservice.cartstore
                 Console.WriteLine("Connecting to Redis: " + connectionString);
                 redis = ConnectionMultiplexer.Connect(redisConnectionOptions);
 
-
+                services.AddOpenTelemetryTracing((builder) => builder
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("redis-cart"))
+                    .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
+                    .AddGrpcClientInstrumentation()
+                    .AddRedisInstrumentation(redis)
+                    .AddJaegerExporter(jaegerOptions =>
+                    {
+                        jaegerOptions.AgentHost = "otel-agent";
+                        jaegerOptions.AgentPort = 6831;
+                    }));
 
                 if (redis == null || !redis.IsConnected)
                 {
