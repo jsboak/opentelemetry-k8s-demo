@@ -18,7 +18,6 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using StackExchange.Redis;
 using Google.Protobuf;
-using OpenTelemetry.Trace;
 
 namespace cartservice.cartstore
 {
@@ -75,18 +74,6 @@ namespace cartservice.cartstore
 
                 Console.WriteLine("Connecting to Redis: " + connectionString);
                 redis = ConnectionMultiplexer.Connect(redisConnectionOptions);
-
-                services.AddOpenTelemetryTracing((builder) => builder
-                    .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("redis-cart"))
-                    .AddAspNetCoreInstrumentation()
-                    .AddHttpClientInstrumentation()
-                    .AddGrpcClientInstrumentation()
-                    .AddRedisInstrumentation(redis)
-                    .AddJaegerExporter(jaegerOptions =>
-                    {
-                        jaegerOptions.AgentHost = "otel-agent";
-                        jaegerOptions.AgentPort = 6831;
-                    }));
 
                 if (redis == null || !redis.IsConnected)
                 {
