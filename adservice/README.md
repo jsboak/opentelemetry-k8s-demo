@@ -1,5 +1,3 @@
-### NOTE: Must download opentelemetry JAR into adservice directory. You can download it from here: https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent-all.jar
-
 # Ad Service
 
 The Ad service provides advertisement based on context keys. If no context keys are provided then it returns random ads.
