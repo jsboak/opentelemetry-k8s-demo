@@ -30,7 +30,7 @@ spec:
       serviceAccountName: default
       containers:
         - name: server
-          image: jnohec/otel-frontend:v4
+          image: jnohec/frontend-airbrake:v1 #jnohec/otel-frontend:v4 #
           ports:
           - containerPort: 8080
           readinessProbe:
