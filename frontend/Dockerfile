@@ -21,6 +21,7 @@ RUN go get go.opentelemetry.io/otel/sdk/trace
 RUN go get go.opentelemetry.io/otel/exporters/stdout
 RUN go get go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc
 
+
 # restore dependencies
 COPY go.mod go.sum ./
 RUN go mod download

@@ -44,6 +44,8 @@ import (
 	"go.opentelemetry.io/otel/propagation"
 	// "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 
+	"github.com/airbrake/gobrake/v5"
+
 	middleware "go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 )
 
@@ -94,6 +96,12 @@ type frontendServer struct {
 
 var log *logrus.Logger
 
+var airbrake = gobrake.NewNotifierWithOptions(&gobrake.NotifierOptions{
+	ProjectId: 321641,
+	ProjectKey: "2088de6b61f2946b932ca900e7be323d",
+	Environment: "production",
+})
+
 func handleErr(err error, message string) {
 	if err != nil {
 		log.Fatalf("%s: %v", message, err)
@@ -101,6 +109,10 @@ func handleErr(err error, message string) {
 }
 
 func main() {
+
+	defer airbrake.Close()
+	defer airbrake.NotifyOnPanic()
+
 	ctx := context.Background()
 
 	driver := otlpgrpc.NewDriver(
