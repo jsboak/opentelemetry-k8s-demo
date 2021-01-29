@@ -39,7 +39,8 @@ RUN npm install \
   @opentelemetry/tracing \
   @opentelemetry/exporter-jaeger \
   @opentelemetry/exporter-collector \
-  @opentelemetry/propagator-b3
+  @opentelemetry/propagator-b3 \
+  @airbrake/node
 
 FROM base
 

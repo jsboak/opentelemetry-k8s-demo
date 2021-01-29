@@ -35,6 +35,10 @@ spec:
         env:
         - name: PORT
           value: "50051"
+        - name: AIRBRAKE_PROJECT_ID
+          value: 321641
+        - name: AIRBRAKE_PROJECT_KEY
+          value: 2088de6b61f2946b932ca900e7be323d
         readinessProbe:
           exec:
             command: ["/bin/grpc_health_probe", "-addr=:50051"]

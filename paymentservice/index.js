@@ -34,7 +34,13 @@ require('@google-cloud/debug-agent').start({
 
 const path = require('path');
 const HipsterShopServer = require('./server');
-const tracer = require('./tracing')
+const tracer = require('./tracing');
+const Airbrake = require('@airbrake/node');
+
+new Airbrake.Notifier({
+  projectId: process.env.AIRBRAKE_PROJECT_ID,
+  projectKey: process.env.AIRBRAKE_PROJECT_KEY,
+});
 
 const PORT = process.env['PORT'];
 const PROTO_PATH = path.join(__dirname, '/proto/');

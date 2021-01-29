@@ -347,8 +347,6 @@ func mustMapEnv(target *string, envKey string) {
 
 func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
 
-
-
 	var err error
 	*conn, err = grpc.DialContext(ctx, addr,
 		grpc.WithInsecure(),
@@ -358,6 +356,5 @@ func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
     	grpc.WithStreamInterceptor(grpcotel.StreamClientInterceptor()))
 	if err != nil {
 		panic(errors.Wrapf(err, "grpc: failed to connect %s", addr))
-		airbrake.Notify(airerrors.New("grpc: failed to connect") ,nil)
 	}
 }
