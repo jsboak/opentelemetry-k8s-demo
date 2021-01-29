@@ -29,7 +29,7 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jnohec/payment-airbrake:v2 #jnohec/otel-payment:v1
+        image: jnohec/payment-airbrake:v4 #jnohec/otel-payment:v1
         ports:
         - containerPort: 50051
         env:

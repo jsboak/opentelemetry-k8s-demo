@@ -15,6 +15,7 @@
 const cardValidator = require('simple-card-validator');
 const uuid = require('uuid/v4');
 const pino = require('pino');
+const Airbrake = require('@airbrake/node');
 
 const logger = pino({
   name: 'paymentservice-charge',
