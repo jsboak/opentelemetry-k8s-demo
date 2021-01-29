@@ -45,6 +45,7 @@ import (
 	// "go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 
 	"github.com/airbrake/gobrake/v5"
+	airerrors "errors"
 
 	middleware "go.opentelemetry.io/contrib/instrumentation/github.com/gorilla/mux/otelmux"
 )
@@ -346,6 +347,8 @@ func mustMapEnv(target *string, envKey string) {
 
 func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
 
+
+
 	var err error
 	*conn, err = grpc.DialContext(ctx, addr,
 		grpc.WithInsecure(),
@@ -355,5 +358,6 @@ func mustConnGRPC(ctx context.Context, conn **grpc.ClientConn, addr string) {
     	grpc.WithStreamInterceptor(grpcotel.StreamClientInterceptor()))
 	if err != nil {
 		panic(errors.Wrapf(err, "grpc: failed to connect %s", addr))
+		airbrake.Notify(airerrors.New("grpc: failed to connect") ,nil)
 	}
 }
