@@ -29,7 +29,11 @@ class CreditCardError extends Error {
   constructor (message) {
     super(message);
     this.code = 400; // Invalid argument error
-    throw new Error('Custom invalid credit card error message');    
+    try {
+      throw new Error('Invalid credit card!');
+    } catch(err) {
+      Airbrake.notify(err);
+    }   
   }
 }
 
