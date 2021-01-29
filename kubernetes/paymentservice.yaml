@@ -29,14 +29,14 @@ spec:
       terminationGracePeriodSeconds: 5
       containers:
       - name: server
-        image: jnohec/otel-payment:v1
+        image: jnohec/payment-airbrake:v2 #jnohec/otel-payment:v1
         ports:
         - containerPort: 50051
         env:
         - name: PORT
           value: "50051"
         - name: AIRBRAKE_PROJECT_ID
-          value: 321641
+          value: "321641"
         - name: AIRBRAKE_PROJECT_KEY
           value: 2088de6b61f2946b932ca900e7be323d
         readinessProbe:
