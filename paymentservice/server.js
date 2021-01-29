@@ -28,6 +28,17 @@ const logger = pino({
   useLevelLabels: true
 });
 
+const { Notifier } = require('@airbrake/node');
+
+const airbrake = new Notifier({
+  projectId: process.env.AIRBRAKE_PROJECT_ID,
+  projectKey: process.env.AIRBRAKE_PROJECT_KEY,
+});
+let startApp = () => {
+  throw new Error('Hello from Airbrake!');
+};
+startApp = airbrake.wrap(charge);
+
 class HipsterShopServer {
   constructor (protoRoot, port = HipsterShopServer.PORT) {
     this.port = port;
